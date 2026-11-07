@@ -69,6 +69,12 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    'portfolio-categories': PortfolioCategory;
+    'portfolio-projects': PortfolioProject;
+    services: Service;
+    testimonials: Testimonial;
+    'journal-posts': JournalPost;
+    enquiries: Enquiry;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -78,6 +84,12 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    'portfolio-categories': PortfolioCategoriesSelect<false> | PortfolioCategoriesSelect<true>;
+    'portfolio-projects': PortfolioProjectsSelect<false> | PortfolioProjectsSelect<true>;
+    services: ServicesSelect<false> | ServicesSelect<true>;
+    testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
+    'journal-posts': JournalPostsSelect<false> | JournalPostsSelect<true>;
+    enquiries: EnquiriesSelect<false> | EnquiriesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -87,8 +99,20 @@ export interface Config {
     defaultIDType: string;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'site-settings': SiteSetting;
+    navigation: Navigation;
+    home: Home;
+    about: About;
+    contact: Contact;
+  };
+  globalsSelect: {
+    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+    navigation: NavigationSelect<false> | NavigationSelect<true>;
+    home: HomeSelect<false> | HomeSelect<true>;
+    about: AboutSelect<false> | AboutSelect<true>;
+    contact: ContactSelect<false> | ContactSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -185,6 +209,362 @@ export interface Media {
   height?: number | null;
 }
 /**
+ * Curated categories used to organize portfolio projects.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "portfolio-categories".
+ */
+export interface PortfolioCategory {
+  id: string;
+  /**
+   * Public category name, for example Bridal, Editorial, or Events.
+   */
+  title: string;
+  /**
+   * URL-friendly identifier. Leave blank to generate it from the title.
+   */
+  slug: string;
+  /**
+   * Optional internal/public category context. Keep it concise.
+   */
+  description?: string | null;
+  /**
+   * Lower numbers appear first.
+   */
+  sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Curated beauty stories. Treat each project like a case study: one exceptional hero, a concise hook, meaningful context, and a varied 4–8 image gallery.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "portfolio-projects".
+ */
+export interface PortfolioProject {
+  id: string;
+  /**
+   * Public project title used on portfolio cards and the project page.
+   */
+  title: string;
+  /**
+   * URL-friendly identifier. Leave blank to generate it from the title.
+   */
+  slug: string;
+  /**
+   * Controls which public portfolio filter this project appears under.
+   */
+  category: string | PortfolioCategory;
+  /**
+   * Optional client, wedding, campaign, or project name shown in project details.
+   */
+  clientName?: string | null;
+  /**
+   * A concise 1–2 sentence hook explaining the mood, finish, or intention of the project. This sells the story in Portfolio cards and featured sections.
+   */
+  excerpt?: string | null;
+  /**
+   * Choose the strongest finished portrait. Prefer a high-resolution 2:3 or 4:5 image with clean framing and enough breathing room for editorial crops.
+   */
+  heroImage: string | Media;
+  /**
+   * Write the project as a short case study: the brief/occasion, the visual direction, and why the makeup choices worked for the person, light, or photography.
+   */
+  story?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Aim for 4–8 varied frames. Mix finished portraits, preparation, details, and wider images. Order them like a visual story and use presentation hints to control pacing.
+   */
+  gallery?:
+    | {
+        image: string | Media;
+        caption?: string | null;
+        /**
+         * Art-direction hint only. Use Wide for genuine horizontal storytelling frames, Portrait for face/detail emphasis, and Landscape for supporting environmental images.
+         */
+        presentation?: ('auto' | 'portrait' | 'landscape' | 'wide') | null;
+        id?: string | null;
+      }[]
+    | null;
+  eventDate?: string | null;
+  location?: string | null;
+  /**
+   * Featured projects can be selected or prioritized in prominent site sections.
+   */
+  featured?: boolean | null;
+  sortOrder?: number | null;
+  /**
+   * Search and social sharing overrides. Leave blank to use the site defaults.
+   */
+  seo?: {
+    /**
+     * Optional search/share title. Aim for a clear, specific phrase around 50–60 characters when practical. Do not repeat keywords unnaturally.
+     */
+    title?: string | null;
+    /**
+     * Optional search description. Summarize the real page value in natural language; around 140–160 characters is a useful target, not a hard rule.
+     */
+    description?: string | null;
+    /**
+     * Optional social-sharing override. Use a strong landscape image when possible (roughly 1.91:1, e.g. 1200×630). Page photography remains the fallback.
+     */
+    image?: (string | null) | Media;
+    /**
+     * Use intentionally for content that should stay public but not appear in search results. Drafts are already protected; do not use this simply because a page is unfinished.
+     */
+    noIndex?: boolean | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * Client-facing services. Write each one to help a visitor decide whether the experience fits their occasion—not as a dense price list.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services".
+ */
+export interface Service {
+  id: string;
+  /**
+   * Public service name shown on the Services page and enquiry form.
+   */
+  title: string;
+  /**
+   * URL-friendly identifier. Leave blank to generate it from the title.
+   */
+  slug: string;
+  /**
+   * Write a concise 1–2 sentence decision hook: who/what the service is for, the feeling it creates, or the kind of occasion it suits.
+   */
+  shortDescription: string;
+  /**
+   * Use this for the useful details that help someone enquire confidently: experience, likely inclusions, preparation, timing context, or what makes this service different. Avoid legal/booking terms here.
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Choose photography that communicates the experience of this service—not just another generic portrait. Process/getting-ready imagery is especially useful for Bridal or group services.
+   */
+  image?: (string | null) | Media;
+  /**
+   * Optional public guidance only. Examples: “From $250”, “By enquiry”, or “Custom quote”. Do not imply a final price if travel, timing, group size, or brief can change it.
+   */
+  priceLabel?: string | null;
+  /**
+   * Optional public guidance such as “90–120 min”, “Bridal morning”, or “Half / full day”. Keep it human-readable rather than operational.
+   */
+  durationLabel?: string | null;
+  /**
+   * Featured services can appear in prominent homepage/service sections.
+   */
+  featured?: boolean | null;
+  sortOrder?: number | null;
+  /**
+   * Search and social sharing overrides. Leave blank to use the site defaults.
+   */
+  seo?: {
+    /**
+     * Optional search/share title. Aim for a clear, specific phrase around 50–60 characters when practical. Do not repeat keywords unnaturally.
+     */
+    title?: string | null;
+    /**
+     * Optional search description. Summarize the real page value in natural language; around 140–160 characters is a useful target, not a hard rule.
+     */
+    description?: string | null;
+    /**
+     * Optional social-sharing override. Use a strong landscape image when possible (roughly 1.91:1, e.g. 1200×630). Page photography remains the fallback.
+     */
+    image?: (string | null) | Media;
+    /**
+     * Use intentionally for content that should stay public but not appear in search results. Drafts are already protected; do not use this simply because a page is unfinished.
+     */
+    noIndex?: boolean | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * Real client reviews used as trust evidence across the website. Keep attribution accurate and never create synthetic or paraphrased praise that is presented as a client quote.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials".
+ */
+export interface Testimonial {
+  id: string;
+  /**
+   * Use the real client name or the exact attribution the client has approved for public display.
+   */
+  clientName: string;
+  /**
+   * Use the client’s own words. Light trimming for length is fine, but do not rewrite the meaning or manufacture stronger praise.
+   */
+  quote: string;
+  /**
+   * Connect the review to the relevant Service when known. This context is displayed publicly and makes the testimonial more useful.
+   */
+  service?: (string | null) | Service;
+  location?: string | null;
+  /**
+   * Optional client portrait. Use only when the client has given permission for public display.
+   */
+  portrait?: (string | null) | Media;
+  /**
+   * Featured reviews are preferred for high-visibility testimonial sections.
+   */
+  featured?: boolean | null;
+  sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * Publish useful beauty guidance and artist stories that answer real client questions. Prioritize original experience, clear structure, and internal relevance over keyword volume. Save drafts freely and use Preview before publishing.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "journal-posts".
+ */
+export interface JournalPost {
+  id: string;
+  /**
+   * The human-facing editorial headline. Make the topic clear enough that a reader understands the value immediately; the SEO group can provide a shorter search-title override when needed.
+   */
+  title: string;
+  /**
+   * URL-friendly identifier. Leave blank to generate it from the title.
+   */
+  slug: string;
+  /**
+   * Write 1–2 useful sentences that explain what the reader will learn. This appears on Journal cards and becomes the default search description when no SEO override is provided.
+   */
+  excerpt: string;
+  /**
+   * Choose an article-specific editorial image, not a generic repeated portrait. It appears in Journal listings, the article hero, and social sharing when no SEO image override exists.
+   */
+  featuredImage: string | Media;
+  /**
+   * Write the complete article here. Use descriptive headings, firsthand expertise, concrete advice, and natural internal references to relevant Services/Portfolio topics. Avoid filler written only to increase word count.
+   */
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * Filled automatically the first time the post is published. Change it only when the editorial date should be different.
+   */
+  publishedAt?: string | null;
+  /**
+   * Featured stories receive the lead position on the public Journal page. Keep this selective.
+   */
+  featured?: boolean | null;
+  /**
+   * Reader-facing topics used for Journal discovery and related-story matching. Reuse a small consistent vocabulary such as Bridal, Skin, Editorial, Preparation, or Behind the Scenes; do not create near-duplicate tags for keywords.
+   */
+  tags?:
+    | {
+        /**
+         * Short human-readable topic label. Prefer an existing topic spelling/capitalization when possible.
+         */
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Optional search/social overrides for this article. Leave blank to use the title, excerpt, featured image, and site defaults.
+   */
+  seo?: {
+    /**
+     * Optional search/share title. Aim for a clear, specific phrase around 50–60 characters when practical. Do not repeat keywords unnaturally.
+     */
+    title?: string | null;
+    /**
+     * Optional search description. Summarize the real page value in natural language; around 140–160 characters is a useful target, not a hard rule.
+     */
+    description?: string | null;
+    /**
+     * Optional social-sharing override. Use a strong landscape image when possible (roughly 1.91:1, e.g. 1200×630). Page photography remains the fallback.
+     */
+    image?: (string | null) | Media;
+    /**
+     * Use intentionally for content that should stay public but not appear in search results. Drafts are already protected; do not use this simply because a page is unfinished.
+     */
+    noIndex?: boolean | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * Prospective-client consultation requests. Review new enquiries promptly, use Status consistently, and keep private follow-up context in Internal notes.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "enquiries".
+ */
+export interface Enquiry {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string | null;
+  preferredContact?: ('email' | 'phone' | 'whatsapp') | null;
+  service?: (string | null) | Service;
+  eventDate?: string | null;
+  location?: string | null;
+  peopleCount?: number | null;
+  message: string;
+  /**
+   * Use consistently: New = unread/untriaged, In progress = being discussed, Replied = response sent, Closed = no further action, Spam = unwanted submission.
+   */
+  status?: ('new' | 'in-progress' | 'replied' | 'closed' | 'spam') | null;
+  /**
+   * Shows whether the enquiry came from the website or was entered manually.
+   */
+  source?: ('website' | 'manual' | 'other') | null;
+  /**
+   * Private follow-up notes for the artist/team: quote context, availability, pending questions, or next action. Never shown publicly.
+   */
+  internalNotes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -215,6 +595,30 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: string | Media;
+      } | null)
+    | ({
+        relationTo: 'portfolio-categories';
+        value: string | PortfolioCategory;
+      } | null)
+    | ({
+        relationTo: 'portfolio-projects';
+        value: string | PortfolioProject;
+      } | null)
+    | ({
+        relationTo: 'services';
+        value: string | Service;
+      } | null)
+    | ({
+        relationTo: 'testimonials';
+        value: string | Testimonial;
+      } | null)
+    | ({
+        relationTo: 'journal-posts';
+        value: string | JournalPost;
+      } | null)
+    | ({
+        relationTo: 'enquiries';
+        value: string | Enquiry;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -304,6 +708,146 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "portfolio-categories_select".
+ */
+export interface PortfolioCategoriesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  description?: T;
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "portfolio-projects_select".
+ */
+export interface PortfolioProjectsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  category?: T;
+  clientName?: T;
+  excerpt?: T;
+  heroImage?: T;
+  story?: T;
+  gallery?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        presentation?: T;
+        id?: T;
+      };
+  eventDate?: T;
+  location?: T;
+  featured?: T;
+  sortOrder?: T;
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        noIndex?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services_select".
+ */
+export interface ServicesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  shortDescription?: T;
+  description?: T;
+  image?: T;
+  priceLabel?: T;
+  durationLabel?: T;
+  featured?: T;
+  sortOrder?: T;
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        noIndex?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials_select".
+ */
+export interface TestimonialsSelect<T extends boolean = true> {
+  clientName?: T;
+  quote?: T;
+  service?: T;
+  location?: T;
+  portrait?: T;
+  featured?: T;
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "journal-posts_select".
+ */
+export interface JournalPostsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  excerpt?: T;
+  featuredImage?: T;
+  content?: T;
+  publishedAt?: T;
+  featured?: T;
+  tags?:
+    | T
+    | {
+        label?: T;
+        id?: T;
+      };
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        noIndex?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "enquiries_select".
+ */
+export interface EnquiriesSelect<T extends boolean = true> {
+  name?: T;
+  email?: T;
+  phone?: T;
+  preferredContact?: T;
+  service?: T;
+  eventDate?: T;
+  location?: T;
+  peopleCount?: T;
+  message?: T;
+  status?: T;
+  source?: T;
+  internalNotes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -341,6 +885,493 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * Source of truth for the artist/business identity, direct contact details, real social profiles, and default search metadata.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings".
+ */
+export interface SiteSetting {
+  id: string;
+  /**
+   * Main website/business name used in browser titles and fallback branding.
+   */
+  siteName: string;
+  /**
+   * Use the exact professional name the artist wants clients to see across the website.
+   */
+  artistName?: string | null;
+  /**
+   * A short, ownable brand line. Avoid vague luxury language that could belong to any makeup artist.
+   */
+  tagline?: string | null;
+  /**
+   * Two or three concise sentences describing the real practice, type of work, and point of view. This now supports high-visibility brand areas such as the footer.
+   */
+  shortDescription?: string | null;
+  logo?: (string | null) | Media;
+  logoMark?: (string | null) | Media;
+  favicon?: (string | null) | Media;
+  /**
+   * Primary contact details used on the Contact page and footer.
+   */
+  contact?: {
+    email?: string | null;
+    /**
+     * Use international format for the WhatsApp number, for example +94771234567.
+     */
+    phone?: string | null;
+    whatsapp?: string | null;
+    serviceArea?: string | null;
+  };
+  /**
+   * Only add real, active public profiles the artist wants clients to visit. These are used as visible trust/contact signals in the footer and About page.
+   */
+  socialLinks?:
+    | {
+        platform: 'instagram' | 'tiktok' | 'facebook' | 'youtube' | 'pinterest' | 'other';
+        label?: string | null;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Site-wide fallback metadata and social image. Important: enabling “Hide from search engines” here applies the no-index fallback across the public site and also removes entries from the dynamic sitemap.
+   */
+  defaultSEO?: {
+    /**
+     * Optional search/share title. Aim for a clear, specific phrase around 50–60 characters when practical. Do not repeat keywords unnaturally.
+     */
+    title?: string | null;
+    /**
+     * Optional search description. Summarize the real page value in natural language; around 140–160 characters is a useful target, not a hard rule.
+     */
+    description?: string | null;
+    /**
+     * Optional social-sharing override. Use a strong landscape image when possible (roughly 1.91:1, e.g. 1200×630). Page photography remains the fallback.
+     */
+    image?: (string | null) | Media;
+    /**
+     * Use intentionally for content that should stay public but not appear in search results. Drafts are already protected; do not use this simply because a page is unfinished.
+     */
+    noIndex?: boolean | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Header and footer navigation shown throughout the public website.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "navigation".
+ */
+export interface Navigation {
+  id: string;
+  /**
+   * Main navigation links shown in the website header.
+   */
+  headerLinks?:
+    | {
+        label: string;
+        url: string;
+        newTab?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Primary header button, usually the enquiry/contact action.
+   */
+  primaryCTA?: {
+    label?: string | null;
+    url?: string | null;
+  };
+  /**
+   * Secondary navigation links shown in the footer.
+   */
+  footerLinks?:
+    | {
+        label: string;
+        url: string;
+        newTab?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  footerNote?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Editorial content and selections for the home page. Layout is controlled by the frontend.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home".
+ */
+export interface Home {
+  id: string;
+  /**
+   * The cinematic opening message and lead photograph. Use one exceptional portrait with enough negative space for oversized typography.
+   */
+  hero?: {
+    eyebrow?: string | null;
+    heading?: string | null;
+    subheading?: string | null;
+    image?: (string | null) | Media;
+    primaryCTA?: {
+      label?: string | null;
+      url?: string | null;
+    };
+  };
+  /**
+   * The belief/manifesto chapter immediately after the hero. Keep it concise, personal, and focused on the artist’s point of view.
+   */
+  introduction?: {
+    eyebrow?: string | null;
+    heading?: string | null;
+    body?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+  };
+  /**
+   * Choose 4–6 strong projects. The first becomes the full-screen Signature Story; the following projects feed the photography essay and Selected Work chapters.
+   */
+  featuredProjects?: (string | PortfolioProject)[] | null;
+  /**
+   * Choose 4–5 services. The first service image becomes the sticky visual in the dark service chapter; the list order controls the homepage sequence.
+   */
+  featuredServices?: (string | Service)[] | null;
+  /**
+   * Choose the strongest client quote. It is prioritized in the homepage trust sequence, with other featured testimonials filling the remaining positions.
+   */
+  featuredTestimonial?: (string | null) | Testimonial;
+  /**
+   * Final full-photography booking invitation. Keep the message simple and confident; this is the strongest conversion moment on the page.
+   */
+  closingCTA?: {
+    eyebrow?: string | null;
+    heading?: string | null;
+    body?: string | null;
+    label?: string | null;
+    url?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * The artist’s public profile: point of view, portrait, real credibility details, and conversion copy. Keep this personal and specific rather than generic biography text.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about".
+ */
+export interface About {
+  id: string;
+  eyebrow?: string | null;
+  heading?: string | null;
+  /**
+   * A concise personal positioning statement. Explain how the artist approaches beauty or how clients should expect the work to feel.
+   */
+  lead?: string | null;
+  /**
+   * Use a strong, current artist portrait or real artist-at-work image. Avoid generic stock photography for a real client launch.
+   */
+  portrait?: (string | null) | Media;
+  /**
+   * Tell the real story behind the practice: point of view, working philosophy, relevant background, and what matters in the client experience. First person is encouraged when it sounds natural.
+   */
+  story?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Only add credibility details that are true and useful: training, specialisms, real awards, years/roles that can be supported, or genuine experience. Never invent press, clients, awards, or numerical claims.
+   */
+  credentials?:
+    | {
+        title: string;
+        detail?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  cta?: {
+    label?: string | null;
+    url?: string | null;
+  };
+  /**
+   * Search and social sharing overrides. Leave blank to use the site defaults.
+   */
+  seo?: {
+    /**
+     * Optional search/share title. Aim for a clear, specific phrase around 50–60 characters when practical. Do not repeat keywords unnaturally.
+     */
+    title?: string | null;
+    /**
+     * Optional search description. Summarize the real page value in natural language; around 140–160 characters is a useful target, not a hard rule.
+     */
+    description?: string | null;
+    /**
+     * Optional social-sharing override. Use a strong landscape image when possible (roughly 1.91:1, e.g. 1200×630). Page photography remains the fallback.
+     */
+    image?: (string | null) | Media;
+    /**
+     * Use intentionally for content that should stay public but not appear in search results. Drafts are already protected; do not use this simply because a page is unfinished.
+     */
+    noIndex?: boolean | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Copy for the private consultation / availability experience. Keep it calm, clear, and low-pressure.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact".
+ */
+export interface Contact {
+  id: string;
+  eyebrow?: string | null;
+  /**
+   * Primary Contact-page statement. Keep it conversational and action-oriented, for example “Tell me what you’re planning.”
+   */
+  heading?: string | null;
+  /**
+   * Explain what to include in the first message and reassure visitors that the enquiry is an availability check, not an instant booking.
+   */
+  intro?: string | null;
+  /**
+   * Heading above the four-part consultation brief. Keep it short, e.g. “Share the details.”
+   */
+  enquiryHeading?: string | null;
+  /**
+   * Optional current availability, travel, lead-time, or booking-window note. Keep it factual and update it when circumstances change.
+   */
+  availabilityNote?: string | null;
+  /**
+   * Set a realistic reply expectation only if the artist can consistently meet it.
+   */
+  responseTime?: string | null;
+  /**
+   * Shown immediately after a successful submission. Confirm receipt and explain the expected next step without implying the booking is confirmed.
+   */
+  successMessage?: string | null;
+  /**
+   * Search and social sharing overrides. Leave blank to use the site defaults.
+   */
+  seo?: {
+    /**
+     * Optional search/share title. Aim for a clear, specific phrase around 50–60 characters when practical. Do not repeat keywords unnaturally.
+     */
+    title?: string | null;
+    /**
+     * Optional search description. Summarize the real page value in natural language; around 140–160 characters is a useful target, not a hard rule.
+     */
+    description?: string | null;
+    /**
+     * Optional social-sharing override. Use a strong landscape image when possible (roughly 1.91:1, e.g. 1200×630). Page photography remains the fallback.
+     */
+    image?: (string | null) | Media;
+    /**
+     * Use intentionally for content that should stay public but not appear in search results. Drafts are already protected; do not use this simply because a page is unfinished.
+     */
+    noIndex?: boolean | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings_select".
+ */
+export interface SiteSettingsSelect<T extends boolean = true> {
+  siteName?: T;
+  artistName?: T;
+  tagline?: T;
+  shortDescription?: T;
+  logo?: T;
+  logoMark?: T;
+  favicon?: T;
+  contact?:
+    | T
+    | {
+        email?: T;
+        phone?: T;
+        whatsapp?: T;
+        serviceArea?: T;
+      };
+  socialLinks?:
+    | T
+    | {
+        platform?: T;
+        label?: T;
+        url?: T;
+        id?: T;
+      };
+  defaultSEO?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        noIndex?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "navigation_select".
+ */
+export interface NavigationSelect<T extends boolean = true> {
+  headerLinks?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        newTab?: T;
+        id?: T;
+      };
+  primaryCTA?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+      };
+  footerLinks?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        newTab?: T;
+        id?: T;
+      };
+  footerNote?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home_select".
+ */
+export interface HomeSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?: T;
+        subheading?: T;
+        image?: T;
+        primaryCTA?:
+          | T
+          | {
+              label?: T;
+              url?: T;
+            };
+      };
+  introduction?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?: T;
+        body?: T;
+      };
+  featuredProjects?: T;
+  featuredServices?: T;
+  featuredTestimonial?: T;
+  closingCTA?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?: T;
+        body?: T;
+        label?: T;
+        url?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about_select".
+ */
+export interface AboutSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  lead?: T;
+  portrait?: T;
+  story?: T;
+  credentials?:
+    | T
+    | {
+        title?: T;
+        detail?: T;
+        id?: T;
+      };
+  cta?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+      };
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        noIndex?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact_select".
+ */
+export interface ContactSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  intro?: T;
+  enquiryHeading?: T;
+  availabilityNote?: T;
+  responseTime?: T;
+  successMessage?: T;
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        noIndex?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
