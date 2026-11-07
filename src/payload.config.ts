@@ -9,6 +9,17 @@ import { s3Storage } from '@payloadcms/storage-s3'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
+import { Enquiries } from './collections/Enquiries'
+import { JournalPosts } from './collections/JournalPosts'
+import { PortfolioCategories } from './collections/PortfolioCategories'
+import { PortfolioProjects } from './collections/PortfolioProjects'
+import { Services } from './collections/Services'
+import { Testimonials } from './collections/Testimonials'
+import { About } from './globals/About'
+import { Contact } from './globals/Contact'
+import { Home } from './globals/Home'
+import { Navigation } from './globals/Navigation'
+import { SiteSettings } from './globals/SiteSettings'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -16,11 +27,33 @@ const dirname = path.dirname(filename)
 export default buildConfig({
   admin: {
     user: Users.slug,
+    dateFormat: 'MMM d, yyyy',
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    components: {
+      beforeDashboard: ['/components/payload/DashboardWelcome#DashboardWelcome'],
+      graphics: {
+        Icon: '/components/payload/AdminIcon#AdminIcon',
+        Logo: '/components/payload/AdminLogo#AdminLogo',
+      },
+    },
+    meta: {
+      description: 'Manage website content, portfolio work, journal stories, and enquiries.',
+      titleSuffix: '— Studio CMS',
+    },
   },
-  collections: [Users, Media],
+  collections: [
+    Users,
+    Media,
+    PortfolioCategories,
+    PortfolioProjects,
+    Services,
+    Testimonials,
+    JournalPosts,
+    Enquiries,
+  ],
+  globals: [SiteSettings, Navigation, Home, About, Contact],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
