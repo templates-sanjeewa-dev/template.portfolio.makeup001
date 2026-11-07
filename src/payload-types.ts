@@ -118,11 +118,21 @@ export interface UserAuthOperations {
   };
 }
 /**
+ * People who can sign in to manage the website.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
   id: string;
+  /**
+   * Display name used to identify this CMS user.
+   */
+  name?: string | null;
+  /**
+   * Administrators can manage team members. Editors manage site content.
+   */
+  role: 'admin' | 'editor';
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -144,12 +154,26 @@ export interface User {
   collection: 'users';
 }
 /**
+ * Photography and visual assets. For premium results, upload original high-resolution images with intentional portrait/wide crops, accurate alt text, and photographer credit where appropriate.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
 export interface Media {
   id: string;
-  alt: string;
+  /**
+   * Describe what is visibly important in the image. Avoid phrases like “image of”. Keep it useful for accessibility first, SEO second.
+   */
+  alt?: string | null;
+  /**
+   * Optional editorial caption. Use it for useful story/context, not to repeat the alternative text.
+   */
+  caption?: string | null;
+  /**
+   * Optional photographer or creative credit. Add it whenever attribution is appropriate or contractually required.
+   */
+  credit?: string | null;
+  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -159,8 +183,6 @@ export interface Media {
   filesize?: number | null;
   width?: number | null;
   height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -241,6 +263,8 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  name?: T;
+  role?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -265,6 +289,9 @@ export interface UsersSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  caption?: T;
+  credit?: T;
+  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -274,8 +301,6 @@ export interface MediaSelect<T extends boolean = true> {
   filesize?: T;
   width?: T;
   height?: T;
-  focalX?: T;
-  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

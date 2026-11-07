@@ -1,0 +1,26 @@
+.image {
+  background: var(--color-paper-deep);
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--image-position, center);
+  opacity: 0;
+  width: 100%;
+  transition: opacity var(--motion-image) ease-out;
+}
+
+.loaded {
+  opacity: 1;
+}
+
+.fallback {
+  background: linear-gradient(145deg, #cbbdb0 0%, #a89484 52%, #79695f 100%);
+  display: block;
+  inset: 0;
+  position: absolute;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .image {
+    transition: none;
+  }
+}

@@ -1,0 +1,130 @@
+.loading {
+  margin: 0 auto;
+  max-width: var(--site-max);
+  min-height: 34rem;
+  padding: clamp(3.5rem, 6vw, 5.5rem) var(--gutter);
+}
+
+.topline {
+  border-bottom: 1px solid var(--color-line);
+  color: var(--color-muted);
+  display: flex;
+  font-size: var(--label-size);
+  font-weight: 650;
+  justify-content: space-between;
+  letter-spacing: 0.11em;
+  padding-bottom: 0.8rem;
+  text-transform: uppercase;
+}
+
+.stage {
+  align-items: center;
+  display: grid;
+  gap: clamp(2.5rem, 6vw, 5rem);
+  grid-template-columns: minmax(15rem, 0.7fr) 1fr;
+  padding: clamp(3rem, 6vw, 5rem) 0;
+}
+
+.image,
+.copy span {
+  animation: loading-breathe 1.35s ease-in-out infinite alternate;
+  background: var(--color-paper-deep);
+}
+
+.image {
+  aspect-ratio: 4 / 5;
+  max-height: 29rem;
+}
+
+.copy {
+  display: grid;
+  gap: 0.9rem;
+  max-width: 37rem;
+}
+
+.copy span:nth-child(1) {
+  height: 0.55rem;
+  width: 6rem;
+}
+
+.copy span:nth-child(2) {
+  height: clamp(3.5rem, 6vw, 5.5rem);
+  width: min(100%, 31rem);
+}
+
+.copy span:nth-child(3) {
+  height: 0.8rem;
+  width: min(68%, 24rem);
+}
+
+.progress {
+  background: var(--color-line);
+  height: 1px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress span {
+  animation: loading-line 1.2s var(--ease-editorial) infinite;
+  background: var(--color-accent);
+  display: block;
+  height: 1px;
+  transform: translateX(-100%);
+  width: 32%;
+}
+
+@keyframes loading-breathe {
+  from {
+    opacity: 0.46;
+  }
+
+  to {
+    opacity: 0.74;
+  }
+}
+
+@keyframes loading-line {
+  0% {
+    transform: translateX(-105%);
+  }
+
+  70%,
+  100% {
+    transform: translateX(330%);
+  }
+}
+
+@media (max-width: 680px) {
+  .topline span:last-child {
+    display: none;
+  }
+
+  .stage {
+    align-items: start;
+    grid-template-columns: 1fr;
+  }
+
+  .image {
+    aspect-ratio: 4 / 5;
+    max-height: none;
+    width: min(72vw, 22rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .image,
+  .copy span,
+  .progress span {
+    animation: none;
+  }
+
+  .image,
+  .copy span {
+    opacity: 0.65;
+  }
+
+  .progress span {
+    transform: none;
+    width: 100%;
+  }
+}

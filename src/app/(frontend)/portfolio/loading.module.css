@@ -1,0 +1,80 @@
+.loading {
+  margin: 0 auto;
+  max-width: var(--site-max);
+  padding: clamp(3.5rem, 6vw, 5.5rem) var(--gutter) var(--section-space);
+}
+
+.heading {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: clamp(3rem, 6vw, 5rem);
+  max-width: 48rem;
+}
+
+.heading span,
+.grid div {
+  animation: loading-pulse 1.5s ease-in-out infinite alternate;
+  background: var(--color-paper-deep);
+  display: block;
+}
+
+.heading span:first-child {
+  height: 0.7rem;
+  width: 8rem;
+}
+
+.heading span:last-child {
+  height: clamp(4rem, 7vw, 6.5rem);
+  width: min(100%, 38rem);
+}
+
+.grid {
+  display: grid;
+  gap: clamp(1.5rem, 3vw, 3rem);
+  grid-template-columns: 1.35fr 0.65fr;
+}
+
+.grid div {
+  aspect-ratio: 4 / 5;
+  min-height: 0;
+}
+
+.grid div:first-child {
+  aspect-ratio: 5 / 5.7;
+  grid-row: span 2;
+}
+
+.grid div:nth-child(2),
+.grid div:nth-child(3) {
+  aspect-ratio: 4 / 5;
+}
+
+@keyframes loading-pulse {
+  from {
+    opacity: 0.48;
+  }
+
+  to {
+    opacity: 0.82;
+  }
+}
+
+@media (max-width: 620px) {
+  .grid {
+    display: block;
+  }
+
+  .grid div,
+  .grid div:first-child {
+    aspect-ratio: 4 / 5;
+    margin-bottom: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heading span,
+  .grid div {
+    animation: none;
+    opacity: 0.68;
+  }
+}

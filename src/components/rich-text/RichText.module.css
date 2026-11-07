@@ -1,0 +1,85 @@
+.richText {
+  color: var(--color-muted);
+}
+
+.richText > div > :first-child {
+  margin-top: 0;
+}
+
+.richText > div > :last-child {
+  margin-bottom: 0;
+}
+
+.richText p,
+.richText li {
+  font-size: clamp(0.98rem, 1.15vw, 1.08rem);
+  line-height: 1.95;
+}
+
+.richText p {
+  margin: 0 0 1.6rem;
+}
+
+.richText > div > p:first-of-type {
+  color: var(--color-ink-soft);
+  font-family: var(--font-display);
+  font-size: clamp(1.45rem, 2.3vw, 2.15rem);
+  letter-spacing: -0.02em;
+  line-height: 1.4;
+  margin-bottom: 2.2rem;
+}
+
+.richText h2,
+.richText h3,
+.richText h4 {
+  color: var(--color-ink);
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+}
+
+.richText h2 {
+  font-size: clamp(3rem, 5.5vw, 5.5rem);
+  margin: clamp(4rem, 7vw, 6rem) 0 1.6rem;
+}
+
+.richText h3 {
+  font-size: clamp(2.2rem, 3.8vw, 3.8rem);
+  margin: 3.5rem 0 1.3rem;
+}
+
+.richText h4 {
+  font-size: 1.7rem;
+  margin: 2.8rem 0 1rem;
+}
+
+.richText blockquote {
+  border-bottom: 1px solid var(--color-line);
+  border-top: 1px solid var(--color-line);
+  color: var(--color-ink);
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 4.8vw, 4.8rem);
+  font-style: italic;
+  letter-spacing: -0.045em;
+  line-height: 1;
+  margin: clamp(4rem, 8vw, 7rem) 0;
+  padding: clamp(2rem, 4vw, 3.5rem) 0;
+}
+
+.richText ul,
+.richText ol {
+  margin: 1.8rem 0;
+  padding-left: 1.3rem;
+}
+
+.richText li {
+  margin-bottom: 0.5rem;
+}
+
+.richText a {
+  color: var(--color-ink);
+  text-decoration-color: var(--color-accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+}

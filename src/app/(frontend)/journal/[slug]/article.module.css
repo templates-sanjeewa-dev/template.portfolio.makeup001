@@ -1,0 +1,456 @@
+.page {
+  overflow: clip;
+}
+
+.eyebrow,
+.heroTopline,
+.meta,
+.tags,
+.relatedHeading span,
+.relatedMeta > span,
+.cta > div > span,
+.nextCopy > span,
+.nextCopy > strong {
+  color: var(--color-muted);
+  font-size: var(--label-size);
+  font-weight: 650;
+  letter-spacing: 0.11em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.eyebrow {
+  margin: 0;
+}
+
+.hero {
+  display: grid;
+  gap: clamp(2.75rem, 4.5vw, 4.5rem);
+  grid-template-columns: minmax(0, 0.94fr) minmax(24rem, 1.06fr);
+  margin: 0 auto;
+  max-width: var(--site-max);
+  padding: clamp(2.75rem, 4.5vw, 4rem) var(--gutter) var(--section-space);
+}
+
+.heroCopy {
+  align-self: center;
+  min-width: 0;
+}
+
+.heroTopline {
+  border-bottom: 1px solid var(--color-line);
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: clamp(2.25rem, 4vw, 3.5rem);
+  padding-bottom: 0.9rem;
+}
+
+.heroTopline a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.heroCopy > .eyebrow {
+  margin-bottom: 0.9rem;
+}
+
+.heroCopy h1 {
+  font-family: var(--font-display);
+  font-size: clamp(3.55rem, 5.05vw, 5rem);
+  font-weight: 400;
+  letter-spacing: -0.05em;
+  line-height: 0.96;
+  margin: 0;
+  max-width: 12ch;
+  text-wrap: balance;
+}
+
+.excerpt {
+  color: var(--color-muted-strong);
+  font-size: 1.03rem;
+  line-height: 1.72;
+  margin: 1.45rem 0 0;
+  max-width: 36rem;
+}
+
+.meta,
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem 1rem;
+}
+
+.meta {
+  border-top: 1px solid var(--color-line);
+  margin-top: 1.75rem;
+  padding-top: 0.8rem;
+}
+
+.authorLink {
+  color: inherit;
+  text-decoration: none;
+}
+
+.authorLink:hover {
+  color: var(--color-ink);
+}
+
+.tags {
+  margin-top: 0.7rem;
+}
+
+.tags span {
+  border-bottom: 1px solid var(--color-line);
+  padding-bottom: 0.2rem;
+}
+
+.heroImage {
+  aspect-ratio: 4 / 5;
+  background: var(--color-paper-deep);
+  margin: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.heroImage::after {
+  background: linear-gradient(to top, rgba(18, 14, 12, 0.28), transparent 24%);
+  content: '';
+  inset: 0;
+  position: absolute;
+}
+
+.heroImage figcaption {
+  bottom: 1rem;
+  color: rgba(250, 247, 242, 0.8);
+  display: flex;
+  font-size: 0.74rem;
+  font-weight: 650;
+  justify-content: space-between;
+  left: 1rem;
+  letter-spacing: 0.09em;
+  position: absolute;
+  right: 1rem;
+  text-transform: uppercase;
+  z-index: 2;
+}
+
+.placeholder {
+  background:
+    radial-gradient(circle at 70% 24%, rgba(255, 255, 255, 0.22), transparent 24%),
+    linear-gradient(145deg, #c6b5aa 0%, #977c72 48%, #554641 100%);
+  inset: 0;
+  position: absolute;
+}
+
+.article {
+  margin: 0 auto;
+  max-width: var(--site-max);
+  padding: var(--section-space) var(--gutter);
+}
+
+.body {
+  margin: 0 auto;
+  max-width: 44rem;
+}
+
+.body > div p,
+.body > div li {
+  font-size: clamp(1.03rem, 1.15vw, 1.1rem);
+  line-height: 1.8;
+}
+
+.body > div > div > p:first-of-type {
+  font-size: clamp(1.16rem, 1.65vw, 1.38rem);
+  line-height: 1.58;
+  margin-bottom: 1.8rem;
+}
+
+.body > div h2 {
+  font-size: clamp(2.4rem, 3.6vw, 3.5rem);
+  margin-top: clamp(3rem, 5vw, 4.25rem);
+}
+
+.body > div h3 {
+  font-size: clamp(1.85rem, 2.5vw, 2.5rem);
+  margin-top: 2.5rem;
+}
+
+.body > div blockquote {
+  font-size: clamp(1.95rem, 3.1vw, 3rem);
+  margin: clamp(3rem, 5vw, 4.25rem) 0;
+  padding: clamp(1.3rem, 2.5vw, 2rem) 0;
+}
+
+.related {
+  border-top: 1px solid var(--color-line);
+  margin: 0 auto;
+  max-width: var(--site-max);
+  padding: var(--section-space) var(--gutter);
+}
+
+.relatedHeading {
+  align-items: end;
+  display: grid;
+  gap: clamp(2rem, 4.5vw, 4.5rem);
+  grid-template-columns: minmax(0, 1.08fr) minmax(18rem, 0.72fr);
+  margin-bottom: clamp(2.75rem, 4.5vw, 4rem);
+}
+
+.relatedHeading h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 4.1vw, 4.05rem);
+  font-weight: 400;
+  letter-spacing: -0.05em;
+  line-height: 0.98;
+  margin: 0.8rem 0 0;
+  max-width: 14ch;
+}
+
+.relatedHeading > p {
+  color: var(--color-muted-strong);
+  font-size: var(--body-small);
+  line-height: 1.72;
+  margin: 0;
+  max-width: 34rem;
+}
+
+.relatedGrid {
+  display: grid;
+  gap: clamp(1.35rem, 2.5vw, 2.5rem);
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.relatedCard {
+  color: inherit;
+  min-width: 0;
+  text-decoration: none;
+}
+
+.relatedCard:nth-child(2) {
+  margin-top: 1.75rem;
+}
+
+.relatedImage {
+  aspect-ratio: 4 / 5;
+  background: var(--color-paper-deep);
+  overflow: hidden;
+  position: relative;
+}
+
+.relatedImage > img {
+  transition:
+    filter var(--motion-slow) ease,
+    transform var(--motion-image) var(--ease-editorial);
+}
+
+.relatedMeta > span {
+  display: block;
+  margin-top: 0.8rem;
+}
+
+.relatedMeta h3 {
+  font-family: var(--font-display);
+  font-size: clamp(1.7rem, 2.35vw, 2.35rem);
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  line-height: 0.98;
+  margin: 0.55rem 0 0.7rem;
+}
+
+.relatedMeta p {
+  color: var(--color-muted-strong);
+  font-size: 0.9rem;
+  line-height: 1.68;
+  margin: 0;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .relatedCard:hover .relatedImage > img {
+    filter: saturate(0.93);
+    transform: scale(1.012);
+  }
+}
+
+.cta {
+  background: var(--color-paper-soft);
+  display: grid;
+  gap: clamp(2rem, 4.5vw, 4.5rem);
+  grid-template-columns: minmax(0, 1.08fr) minmax(18rem, 0.78fr);
+  padding: var(--section-space)
+    max(var(--gutter), calc((100vw - var(--site-max)) / 2 + var(--gutter)));
+}
+
+.cta h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 4.1vw, 4.05rem);
+  font-weight: 400;
+  letter-spacing: -0.05em;
+  line-height: 0.98;
+  margin: 0.8rem 0 0;
+  max-width: 14ch;
+}
+
+.cta > div:last-child {
+  align-self: end;
+}
+
+.cta > div:last-child > p {
+  color: var(--color-muted-strong);
+  line-height: 1.72;
+  margin: 0 0 1.7rem;
+  max-width: 34rem;
+}
+
+.ctaActions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+}
+
+.next {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.next > a {
+  color: inherit;
+  display: grid;
+  gap: clamp(2.5rem, 4.5vw, 4.5rem);
+  grid-template-columns: minmax(0, 1fr) minmax(22rem, 0.78fr);
+  margin: 0 auto;
+  max-width: var(--site-max);
+  min-height: 20rem;
+  padding: 0 var(--gutter);
+  text-decoration: none;
+}
+
+.nextCopy {
+  align-self: center;
+  padding: clamp(3.25rem, 5vw, 4.5rem) 0;
+}
+
+.nextCopy > span,
+.nextCopy > strong {
+  color: rgba(244, 240, 233, 0.66);
+  display: block;
+}
+
+.nextCopy h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 3.6vw, 3.55rem);
+  font-weight: 400;
+  letter-spacing: -0.05em;
+  line-height: 0.98;
+  margin: 0.85rem 0 0.9rem;
+  max-width: 13ch;
+}
+
+.nextCopy p {
+  color: rgba(244, 240, 233, 0.74);
+  line-height: 1.72;
+  margin: 0 0 1.3rem;
+  max-width: 32rem;
+}
+
+.nextImage {
+  min-height: 20rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.nextImage > img {
+  transition:
+    filter var(--motion-slow) ease,
+    transform var(--motion-image) var(--ease-editorial);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .next a:hover .nextImage > img {
+    filter: saturate(0.93);
+    transform: scale(1.012);
+  }
+}
+
+@media (max-width: 760px) {
+  .hero {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 0;
+    padding: 0 0 var(--section-space);
+  }
+
+  .heroCopy {
+    padding: 3rem var(--gutter) 0;
+  }
+
+  .heroTopline {
+    margin-bottom: 2.4rem;
+  }
+
+  .heroCopy h1 {
+    font-size: clamp(3.45rem, 14vw, 4.7rem);
+  }
+
+  .relatedHeading,
+  .cta {
+    gap: 2rem;
+    grid-template-columns: 1fr;
+  }
+
+  .relatedGrid {
+    display: block;
+  }
+
+  .relatedCard,
+  .relatedCard:nth-child(2) {
+    display: block;
+    margin: 0 0 3rem;
+  }
+
+  .cta > div:last-child {
+    align-self: start;
+  }
+
+  .ctaActions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .ctaActions > a {
+    width: 100%;
+  }
+
+  .next > a {
+    display: flex;
+    flex-direction: column-reverse;
+    padding: 0;
+  }
+
+  .nextCopy {
+    padding: 3rem var(--gutter) 3.5rem;
+  }
+
+  .nextImage {
+    min-height: 68vw;
+  }
+}
+
+@media (max-width: 480px) {
+  .heroTopline span:last-child,
+  .heroImage figcaption span:last-child {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .relatedImage > img,
+  .nextImage > img {
+    transition: none;
+  }
+
+  .relatedCard:hover .relatedImage > img,
+  .next a:hover .nextImage > img {
+    transform: none;
+  }
+}
